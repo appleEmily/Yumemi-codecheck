@@ -19,6 +19,8 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var frksLbl: UILabel!
     @IBOutlet weak var issuesLbl: UILabel!
     
+    
+    //テスト
     //よくなさそう
     var vc1: HomeViewController!
     
