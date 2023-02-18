@@ -14,9 +14,9 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     
     var repo: [[String: Any]] = []
     var task: URLSessionTask?
-    var url: String!
-    var word: String!
-    var idx: Int!
+    var accessUrl: String!
+    var enterdWord: String!
+    var index: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         // task?.cancel()
         if searchText.isEmpty {
             //検索して出ていたのを全部消す
-            word = nil
+            enterdWord = nil
             searchApi()
             
         }
@@ -43,7 +43,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        word = searchBar.text!
+        enterdWord = searchBar.text!
         searchApi()
         URLSession.shared.finishTasksAndInvalidate()
     }
@@ -51,9 +51,9 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     func searchApi() {
         
         if let word {
-            url = "https://api.github.com/search/repositories?q=\(word)"
+            accessUrl = "https://api.github.com/search/repositories?q=\(word)"
             //パーセントエンコードで全文字に対応させる。
-            let encodedUrl: String = url!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            let encodedUrl: String = accessUrl!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
             task = URLSession.shared.dataTask(with: URL(string: encodedUrl)!) { (data, res, err) in
                 //URLSession.shared.finishTasksAndInvalidate()
                 let obj = try! JSONSerialization.jsonObject(with: data!) as? [String: Any]
@@ -69,7 +69,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
                     } else {
                         //存在しないリポジトリの時、アラートを表示する
                         DispatchQueue.main.async {
-                            let alert = UIAlertController(title: "存在しないリポジトリ", message: "リポジトリが存在しません。", preferredStyle: .alert)
+                            let alert = UIAlertController(title: "存在しないリポジトリです😭", message: "検索し直してください。", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: "OK", style: .default))
                             self.present(alert, animated: true, completion: nil)
                         }
@@ -111,7 +111,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        idx = indexPath.row
+        index = indexPath.row
         performSegue(withIdentifier: "goToDetail", sender: self)
         
     }
