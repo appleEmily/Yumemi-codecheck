@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         let repo = homeVC.repo[homeVC.index]
-        
+
         titleLbl.text = repo["full_name"] as? String
         langLbl.text = "Written in \(repo["language"] as? String ?? "")"
         starLbl.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"

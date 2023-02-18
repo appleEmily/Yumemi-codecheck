@@ -50,8 +50,8 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     //APIを叩くメソッド
     func searchApi() {
         
-        if let word {
-            accessUrl = "https://api.github.com/search/repositories?q=\(word)"
+        if let enterdWord {
+            accessUrl = "https://api.github.com/search/repositories?q=\(enterdWord)"
             //パーセントエンコードで全文字に対応させる。
             let encodedUrl: String = accessUrl!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
             task = URLSession.shared.dataTask(with: URL(string: encodedUrl)!) { (data, res, err) in
