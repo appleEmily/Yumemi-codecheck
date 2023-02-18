@@ -21,9 +21,13 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //srchBrの設定
         srchBr.placeholder = "GitHubのリポジトリを検索できるよー"
         srchBr.autocapitalizationType = .none
         srchBr.delegate = self
+        
+        //tableViewの話
+        tableView.register(UINib(nibName: "HomeVCTableViewCell", bundle: nil), forCellReuseIdentifier: "customCell")
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -92,16 +96,15 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return repo.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! HomeVCTableViewCell
         let rp = repo[indexPath.row]
-        cell.textLabel?.text = rp["full_name"] as? String ?? ""
-        cell.detailTextLabel?.text = rp["language"] as? String ?? ""
+        cell.rpLabel.text = rp["full_name"] as? String ?? ""
+        cell.langLabel.text = rp["language"] as? String ?? ""
         cell.tag = indexPath.row
         
         return cell
@@ -112,6 +115,10 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         performSegue(withIdentifier: "goToDetail", sender: self)
         
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+            return 60
+        }
     
 }
 
