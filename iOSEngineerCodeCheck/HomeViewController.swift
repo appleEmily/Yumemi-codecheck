@@ -32,7 +32,6 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         if searchText.isEmpty {
             //検索して出ていたのを全部消す
             word = nil
-            repo.removeAll()
             searchApi()
             
         }
@@ -42,10 +41,12 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         word = searchBar.text!
         searchApi()
+        URLSession.shared.finishTasksAndInvalidate()
     }
+    //APIを叩くメソッド
     func searchApi() {
         
-        if let word = word {
+        if let word {
             url = "https://api.github.com/search/repositories?q=\(word)"
             //パーセントエンコードで全文字に対応させる。
             let encodedUrl: String = url!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -75,6 +76,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
             task?.resume()
         } else {
             print("nothing")
+            repo.removeAll()
             self.tableView.reloadData()
         }
     }
