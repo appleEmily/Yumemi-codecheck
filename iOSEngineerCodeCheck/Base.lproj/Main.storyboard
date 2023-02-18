@@ -38,7 +38,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="E7E-kF-FF6">
-                                            <rect key="frame" x="329" y="12" width="43" height="20"/>
+                                            <rect key="frame" x="329" y="12" width="44" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -56,7 +56,7 @@
                     <navigationItem key="navigationItem" title="Root View Controller" id="ktq-eC-ZBq"/>
                     <connections>
                         <outlet property="srchBr" destination="6rq-CD-Hob" id="3gq-mK-4M3"/>
-                        <segue destination="AHY-RL-7mG" kind="show" identifier="Detail" id="qqd-8W-4W1"/>
+                        <segue destination="AHY-RL-7mG" kind="show" identifier="goToDetail" id="qqd-8W-4W1"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xer-fe-JeW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -139,7 +139,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="J6o-vL-S1z"/>
                     <connections>
-                        <outlet property="frksLbl" destination="ZMv-4f-X2V" id="i84-sH-c5t"/>
+                        <outlet property="forksLbl" destination="ZMv-4f-X2V" id="i84-sH-c5t"/>
                         <outlet property="imgView" destination="Iim-eb-8Ad" id="dmH-tP-ZuI"/>
                         <outlet property="issuesLbl" destination="dzg-K8-h2L" id="L0v-sy-cD4"/>
                         <outlet property="langLbl" destination="s3M-QO-Kom" id="ibp-jS-ZCk"/>

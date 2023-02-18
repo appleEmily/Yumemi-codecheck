@@ -16,23 +16,23 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var langLbl: UILabel!
     @IBOutlet weak var strsLbl: UILabel!
     @IBOutlet weak var wchsLbl: UILabel!
-    @IBOutlet weak var frksLbl: UILabel!
+    @IBOutlet weak var forksLbl: UILabel!
     @IBOutlet weak var issuesLbl: UILabel!
     
     
-    //テスト
-    //よくなさそう
-    var vc1: HomeViewController!
+    //直す
+    var homeVC: HomeViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let repo = vc1.repo[vc1.idx]
+        let repo = homeVC.repo[homeVC.idx]
         
+        titleLbl.text = repo["full_name"] as? String
         langLbl.text = "Written in \(repo["language"] as? String ?? "")"
         strsLbl.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
         wchsLbl.text = "\(repo["wachers_count"] as? Int ?? 0) watchers"
-        frksLbl.text = "\(repo["forks_count"] as? Int ?? 0) forks"
+        forksLbl.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         issuesLbl.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
         getImage()
         
@@ -40,9 +40,9 @@ class DetailViewController: UIViewController {
     
     func getImage() {
         
-        let repo = vc1.repo[vc1.idx]
+        let repo = homeVC.repo[homeVC.idx]
         
-        titleLbl.text = repo["full_name"] as? String
+        
         
         if let owner = repo["owner"] as? [String: Any] {
             if let imgURL = owner["avatar_url"] as? String {

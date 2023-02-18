@@ -12,10 +12,9 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     
     @IBOutlet weak var srchBr: UISearchBar!
     
-    var repo: [[String: Any]]=[]
+    var repo: [[String: Any]] = []
     
     var task: URLSessionTask?
-    var word: String!
     var url: String!
     var idx: Int!
     
@@ -24,30 +23,15 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         
         //srchBrにplaceholderをセット
         srchBr.placeholder = "GitHubのリポジトリを検索できるよー"
-        
-        
         srchBr.delegate = self
     }
-    
-    //いらなさそう。消す予定
-    /*
-     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-     // ↓こうすれば初期のテキストを消せる
-     searchBar.text = ""
-     return true
-     }
-     */
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         task?.cancel()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        word = searchBar.text!
-        
-        //ネストすぎ！？
-        if let word = word {
+        if let word = searchBar.text {
             url = "https://api.github.com/search/repositories?q=\(word)"
             task = URLSession.shared.dataTask(with: URL(string: url)!) { (data, res, err) in
                 if let obj = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
@@ -59,7 +43,6 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
                     }
                 }
             }
-            //リスト更新
             task?.resume()
         }
         
@@ -67,14 +50,15 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.identifier == "Detail"{
-            let dtl = segue.destination as! DetailViewController
-            dtl.vc1 = self
+        if segue.identifier == "goToDetail"{
+            let dtlVC = segue.destination as! DetailViewController
+            dtlVC.homeVC = self
         }
         
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return repo.count
     }
     
@@ -85,14 +69,14 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         cell.textLabel?.text = rp["full_name"] as? String ?? ""
         cell.detailTextLabel?.text = rp["language"] as? String ?? ""
         cell.tag = indexPath.row
-        return cell
         
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 画面遷移時に呼ばれる
         idx = indexPath.row
-        performSegue(withIdentifier: "Detail", sender: self)
+        performSegue(withIdentifier: "goToDetail", sender: self)
         
     }
     
