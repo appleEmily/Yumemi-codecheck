@@ -45,7 +45,6 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     }
     func searchApi() {
         
-        
         if let word = word {
             url = "https://api.github.com/search/repositories?q=\(word)"
             //パーセントエンコードで全文字に対応させる。
@@ -53,24 +52,25 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
             task = URLSession.shared.dataTask(with: URL(string: encodedUrl)!) { (data, res, err) in
                 //URLSession.shared.finishTasksAndInvalidate()
                 let obj = try! JSONSerialization.jsonObject(with: data!) as? [String: Any]
-                print(obj!["total_count"] as! Int)
-                let numberOfItem: Int =  obj!["total_count"] as! Int
-                
-                if numberOfItem != 0 {
-                    let items = obj!["items"] as? [[String: Any]]
-                    self.repo = items!
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
+                if let numberOfItem: Int =  obj!["total_count"] as? Int {
                     
-                } else {
-                    //存在しないリポジトリの時、アラートを表示する
-                    DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "存在しないリポジトリ", message: "リポジトリが存在しません。", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default))
-                        self.present(alert, animated: true, completion: nil)
+                    if numberOfItem != 0 {
+                        let items = obj!["items"] as? [[String: Any]]
+                        self.repo = items!
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                            
+                        }
+                    } else {
+                        //存在しないリポジトリの時、アラートを表示する
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "存在しないリポジトリ", message: "リポジトリが存在しません。", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default))
+                            self.present(alert, animated: true, completion: nil)
+                        }
                     }
                 }
+                
             }
             task?.resume()
         } else {
