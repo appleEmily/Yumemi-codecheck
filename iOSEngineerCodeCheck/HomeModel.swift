@@ -9,6 +9,10 @@
 import Foundation
 
 class HomeModel {
-    
+    var repo: [[String: Any]] = []
+    var task: URLSessionTask?
+    var accessUrl: String!
+    var enterdWord: String!
+    var index: Int!
     
 }
