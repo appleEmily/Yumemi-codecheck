@@ -10,7 +10,6 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var langLbl: UILabel!
@@ -26,7 +25,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let repo = homeVC.repo[homeVC.index]
+        let repo = homeVC.homeModel.repo[homeVC.homeModel.index]
 
         titleLbl.text = repo["full_name"] as? String
         langLbl.text = "Written in \(repo["language"] as? String ?? "")"
@@ -40,7 +39,7 @@ class DetailViewController: UIViewController {
     
     func getImage() {
         
-        let repo = homeVC.repo[homeVC.index]
+        let repo = homeVC.homeModel.repo[homeVC.homeModel.index]
         
         if let owner = repo["owner"] as? [String: Any] {
             
