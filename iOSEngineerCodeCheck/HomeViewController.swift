@@ -13,7 +13,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     @IBOutlet weak var srchBr: UISearchBar!
     
     var repo: [[String: Any]] = []
-    var task: URLSessionTask?
+    weak var task: URLSessionTask?
     var accessUrl: String!
     var enterdWord: String!
     var index: Int!
@@ -36,6 +36,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         if searchText.isEmpty {
             //検索して出ていたのを全部消す
             enterdWord = nil
+            task?.cancel()
             searchApi()
             
         }
@@ -43,10 +44,11 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
         enterdWord = searchBar.text!
         searchApi()
-        URLSession.shared.finishTasksAndInvalidate()
     }
+    
     //APIを叩くメソッド
     func searchApi() {
         
@@ -54,16 +56,19 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
             accessUrl = "https://api.github.com/search/repositories?q=\(enterdWord)"
             //パーセントエンコードで全文字に対応させる。
             let encodedUrl: String = accessUrl!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-            task = URLSession.shared.dataTask(with: URL(string: encodedUrl)!) { (data, res, err) in
-                //URLSession.shared.finishTasksAndInvalidate()
+            
+            task = URLSession.shared.dataTask(with: URL(string: encodedUrl)!) {[weak self] (data, res, err) in
+                URLSession.shared.finishTasksAndInvalidate()
+                
                 let obj = try! JSONSerialization.jsonObject(with: data!) as? [String: Any]
+                
                 if let numberOfItem: Int =  obj!["total_count"] as? Int {
                     
                     if numberOfItem != 0 {
                         let items = obj!["items"] as? [[String: Any]]
-                        self.repo = items!
+                        self?.repo = items!
                         DispatchQueue.main.async {
-                            self.tableView.reloadData()
+                            self?.tableView.reloadData()
                             
                         }
                     } else {
@@ -71,7 +76,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
                         DispatchQueue.main.async {
                             let alert = UIAlertController(title: "存在しないリポジトリです😭", message: "検索し直してください。", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: "OK", style: .default))
-                            self.present(alert, animated: true, completion: nil)
+                            self?.present(alert, animated: true, completion: nil)
                         }
                     }
                 }
