@@ -32,7 +32,6 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
             //検索して出ていたのを全部消す
             //homeModel.enterdWord = nil
             homeModel.task?.cancel()
-            
             homeModel.repo.removeAll()
             self.tableView.reloadData()
             
@@ -65,29 +64,29 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         //let encodedUrl: String = homeModel.accessUrl!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         homeModel.task = URLSession.shared.dataTask(with: URL(string: homeModel.accessUrl)!) {[weak self] (data, res, err) in
-            URLSession.shared.finishTasksAndInvalidate()
             
-            let obj = try! JSONSerialization.jsonObject(with: data!) as? [String: Any]
-            
-            if let numberOfItem: Int =  obj!["total_count"] as? Int {
+            if let data {
+                let obj = try! JSONSerialization.jsonObject(with: data) as? [String: Any]
                 
-                if numberOfItem != 0 {
-                    let items = obj!["items"] as? [[String: Any]]
-                    self?.homeModel.repo = items!
-                    DispatchQueue.main.async {
-                        self?.tableView.reloadData()
-                        
-                    }
-                } else {
-                    //存在しないリポジトリの時、アラートを表示する
-                    DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "存在しないリポジトリです😭", message: "検索し直してください。", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default))
-                        self?.present(alert, animated: true, completion: nil)
+                if let numberOfItem: Int =  obj!["total_count"] as? Int {
+                    
+                    if numberOfItem != 0 {
+                        let items = obj!["items"] as? [[String: Any]]
+                        self?.homeModel.repo = items!
+                        DispatchQueue.main.async {
+                            self?.tableView.reloadData()
+                            
+                        }
+                    } else {
+                        //存在しないリポジトリの時、アラートを表示する
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "存在しないリポジトリです😭", message: "検索し直してください。", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default))
+                            self?.present(alert, animated: true, completion: nil)
+                        }
                     }
                 }
             }
-            
         }
         homeModel.task?.resume()
     }
