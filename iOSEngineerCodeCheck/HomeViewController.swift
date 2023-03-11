@@ -30,9 +30,8 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         tableView.register(UINib(nibName: "HomeVCTableViewCell", bundle: nil), forCellReuseIdentifier: "customCell")
     }
     
+    //テキストが変更されたとき。
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        //タスクをキャンセル。
-        // task?.cancel()
         if searchText.isEmpty {
             //検索して出ていたのを全部消す
             enterdWord = nil
@@ -43,6 +42,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         
     }
     
+    //検索が始まるとき。
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         enterdWord = searchBar.text!
