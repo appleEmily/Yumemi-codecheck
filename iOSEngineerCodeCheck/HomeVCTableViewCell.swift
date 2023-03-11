@@ -24,6 +24,13 @@ class HomeVCTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    //cellの再利用をしない。
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        
+    }
+    
     
     
 }

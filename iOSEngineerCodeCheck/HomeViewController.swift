@@ -45,7 +45,6 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         if let enterdWord = searchBar.text {
             //パーセントエンコードで全文字に対応させる。
             let encodedWnterdWord: String = enterdWord.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-            print(encodedWnterdWord)
             searchApi(enterdWord: encodedWnterdWord)
         } else {
             print("nothing")
@@ -59,38 +58,52 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     //APIを叩くメソッド
     func searchApi(enterdWord: String) {
         
+        //accessUrlを作成。
         homeModel.accessUrl = "https://api.github.com/search/repositories?q=\(enterdWord)"
-        //パーセントエンコードで全文字に対応させる。
-        //let encodedUrl: String = homeModel.accessUrl!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
+        //taskをセット
         homeModel.task = URLSession.shared.dataTask(with: URL(string: homeModel.accessUrl)!) {[weak self] (data, res, err) in
+            //dataが存在するか。
+            guard let data else {
+                print("received data not exist")
+                return
+            }
             
-            if let data {
-                let obj = try! JSONSerialization.jsonObject(with: data) as? [String: Any]
+            //JSONにアクセスできているか。
+            guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                print("JSON Serialization failed")
+                return
+            }
+            
+            //検索結果が0このときにアラートを出す。
+            let numberOfItem: Int =  (obj["total_count"] as? Int)!
+            
+            switch numberOfItem {
+            case 0:
+                //存在しないリポジトリの時、アラートを表示する
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "存在しないリポジトリです😭", message: "検索し直してください。", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self?.present(alert, animated: true, completion: nil)
+                }
                 
-                if let numberOfItem: Int =  obj!["total_count"] as? Int {
-                    
-                    if numberOfItem != 0 {
-                        let items = obj!["items"] as? [[String: Any]]
-                        self?.homeModel.repo = items!
-                        DispatchQueue.main.async {
-                            self?.tableView.reloadData()
-                            
-                        }
-                    } else {
-                        //存在しないリポジトリの時、アラートを表示する
-                        DispatchQueue.main.async {
-                            let alert = UIAlertController(title: "存在しないリポジトリです😭", message: "検索し直してください。", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: .default))
-                            self?.present(alert, animated: true, completion: nil)
-                        }
+            default:
+                let items = obj["items"] as? [[String: Any]]
+                self?.homeModel.repo = items!
+                DispatchQueue.main.async { [weak self] in
+                    guard let weakSelf = self else {
+                        print("self is already deallocated")
+                        return
                     }
+                    weakSelf.tableView.reloadData()
                 }
             }
         }
+        
         homeModel.task?.resume()
     }
     
+    //画面遷移
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "goToDetail"{
@@ -98,7 +111,6 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
             
             dtlVC.homeVC = self
         }
-        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -116,12 +128,14 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         return cell
     }
     
+    //セルをクリックしたときの画面遷移
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         homeModel.index = indexPath.row
         performSegue(withIdentifier: "goToDetail", sender: self)
         
     }
     
+    //セルの高さ
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }

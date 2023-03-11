@@ -14,5 +14,4 @@ class HomeModel {
     var accessUrl: String!
     var enterdWord: String!
     var index: Int!
-    
 }
