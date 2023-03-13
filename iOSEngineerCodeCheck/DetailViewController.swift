@@ -4,7 +4,6 @@
 //
 //  Created by 史 翔新 on 2020/04/21.
 //  Copyright © 2020 YUMEMI Inc. All rights reserved.
-//
 
 import UIKit
 
@@ -18,21 +17,20 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var forkLbl: UILabel!
     @IBOutlet weak var issueLbl: UILabel!
     
-    
-    //直す
     var homeVC: HomeViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let repo = homeVC.homeModel.repo[homeVC.homeModel.index]
-
+        
         titleLbl.text = repo["full_name"] as? String
         langLbl.text = "Written in \(repo["language"] as? String ?? "")"
         starLbl.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
         wacherLbl.text = "\(repo["wachers_count"] as? Int ?? 0) watchers"
         forkLbl.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         issueLbl.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
+        
         getImage()
         
     }

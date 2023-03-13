@@ -17,7 +17,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //srchBrの設定
+        //searchBarの設定
         searchBar.placeholder = "GitHubのリポジトリを検索できるよー"
         searchBar.autocapitalizationType = .none
         searchBar.delegate = self
@@ -79,17 +79,18 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
             let numberOfItem: Int =  (obj["total_count"] as? Int)!
             
             switch numberOfItem {
-            case 0:
                 //存在しないリポジトリの時、アラートを表示する
+            case 0:
                 DispatchQueue.main.async {
                     let alert = UIAlertController(title: "存在しないリポジトリです😭", message: "検索し直してください。", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default))
                     self?.present(alert, animated: true, completion: nil)
                 }
-                
+                //検索結果を表示
             default:
                 let items = obj["items"] as? [[String: Any]]
                 self?.homeModel.repo = items!
+                
                 DispatchQueue.main.async { [weak self] in
                     guard let weakSelf = self else {
                         print("self is already deallocated")
@@ -113,14 +114,19 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         }
     }
     
+    //tableView行数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return homeModel.repo.count
     }
     
+    //tableView　cell設定
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! HomeVCTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as? HomeVCTableViewCell else {
+            return UITableViewCell()
+        }
         let rp = homeModel.repo[indexPath.row]
+        print(rp)
         cell.rpLabel.text = rp["full_name"] as? String ?? ""
         cell.langLabel.text = rp["language"] as? String ?? ""
         cell.tag = indexPath.row
@@ -135,7 +141,7 @@ class HomeViewController: UITableViewController, UISearchBarDelegate {
         
     }
     
-    //セルの高さ
+    //cellの高さ
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
