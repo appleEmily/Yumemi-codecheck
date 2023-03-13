@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A19C87B429BC6612001D671D /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19C87B329BC6612001D671D /* HomeModel.swift */; };
 		A1C29B0429A0F1F900E1B142 /* HomeVCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C29B0229A0F1F900E1B142 /* HomeVCTableViewCell.swift */; };
 		A1C29B0529A0F1F900E1B142 /* HomeVCTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1C29B0329A0F1F900E1B142 /* HomeVCTableViewCell.xib */; };
 		BF0A658D244F2A3B00280FA6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0A658C244F2A3B00280FA6 /* DetailViewController.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A19C87B329BC6612001D671D /* HomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
 		A1C29B0229A0F1F900E1B142 /* HomeVCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVCTableViewCell.swift; sourceTree = "<group>"; };
 		A1C29B0329A0F1F900E1B142 /* HomeVCTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeVCTableViewCell.xib; sourceTree = "<group>"; };
 		BF0A658C244F2A3B00280FA6 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				BFD945DE244DC5E80012785A /* AppDelegate.swift */,
 				BFD945E0244DC5E80012785A /* SceneDelegate.swift */,
 				BFD945E2244DC5E80012785A /* HomeViewController.swift */,
+				A19C87B329BC6612001D671D /* HomeModel.swift */,
 				BF0A658C244F2A3B00280FA6 /* DetailViewController.swift */,
 				BFD945E4244DC5E80012785A /* Main.storyboard */,
 				A1C29B0229A0F1F900E1B142 /* HomeVCTableViewCell.swift */,
@@ -271,6 +274,7 @@
 			files = (
 				BFD945E3244DC5E80012785A /* HomeViewController.swift in Sources */,
 				BF0A658D244F2A3B00280FA6 /* DetailViewController.swift in Sources */,
+				A19C87B429BC6612001D671D /* HomeModel.swift in Sources */,
 				BFD945DF244DC5E80012785A /* AppDelegate.swift in Sources */,
 				BFD945E1244DC5E80012785A /* SceneDelegate.swift in Sources */,
 				A1C29B0429A0F1F900E1B142 /* HomeVCTableViewCell.swift in Sources */,
